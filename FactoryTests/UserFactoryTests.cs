@@ -78,5 +78,11 @@ namespace Team42Test.FactoryTests
             Assert.That(answer.BadgeList, Is.Empty);
             Assert.That(answer.BadgeList, Is.EqualTo(expectedBadgelist));
         }
+
+        [TearDown]
+        public void TearDown()
+        {
+            mockFactory.End();
+        }
     }
 }
