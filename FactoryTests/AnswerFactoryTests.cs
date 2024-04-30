@@ -15,7 +15,7 @@ namespace Team42Test.FactoryTests
             mockFactory = new AnswerFactory();
         }
         [Test]
-        public void Begin_ShouldInitializeNewNullInstance()
+        public void Begin_InitializeNewInstance()
         {
             mockFactory.Begin();
 
