@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Team42Test.FactoryTests
 {
-    internal class ReactionFactoryTests
+    public class ReactionFactoryTests
     {
+        [SetUp]
+        public void Setup()
+        {
+
+        }
     }
 }
