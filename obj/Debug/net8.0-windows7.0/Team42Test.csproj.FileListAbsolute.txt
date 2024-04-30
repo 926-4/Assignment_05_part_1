@@ -130,3 +130,4 @@ D:\II\SSE\Team42Test\obj\Debug\net8.0-windows7.0\refint\Team42Test.dll
 D:\II\SSE\Team42Test\obj\Debug\net8.0-windows7.0\Team42Test.pdb
 D:\II\SSE\Team42Test\obj\Debug\net8.0-windows7.0\Team42Test.genruntimeconfig.cache
 D:\II\SSE\Team42Test\obj\Debug\net8.0-windows7.0\ref\Team42Test.dll
+D:\II\SSE\Team42Test\obj\Debug\net8.0-windows7.0\Team42Test.sourcelink.json
