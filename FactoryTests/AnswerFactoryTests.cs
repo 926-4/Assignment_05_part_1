@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Service.EntityCreationServices;
@@ -21,7 +22,7 @@ namespace Team42Test.FactoryTests
 
             var answer  = mockFactory.End();
             Assert.That(answer,Is.Not.Null);
-            Assert.That(answer, Is.InstanceOf<Answer>());
+            Assert.That(answer, Is.InstanceOf<IAnswer>());
         }
 
         [Test]

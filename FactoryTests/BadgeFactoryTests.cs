@@ -3,6 +3,7 @@ using UBB_SE_2024_Team_42.Domain;
 using UBB_SE_2024_Team_42.Domain.Badge;
 namespace Team42Test.FactoryTests
 {
+    [TestFixture]
     public class BadgeFactoryTests
     {
         public BadgeFactory mockFactory;
@@ -20,7 +21,7 @@ namespace Team42Test.FactoryTests
 
             var answer = mockFactory.End();
             Assert.That(answer, Is.Not.Null);
-            Assert.That(answer, Is.InstanceOf<Badge>());
+            Assert.That(answer, Is.InstanceOf<IBadge>());
         }
 
         [Test]
