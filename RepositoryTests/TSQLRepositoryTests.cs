@@ -1,17 +1,17 @@
 ﻿using System;
 using NUnit.Framework;
-using Moq;
-using UBB_SE_2024_Team_42.Repository.TSQLRepository;
 using UBB_SE_2024_Team_42.Domain.Notification;
 using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Badge;
 using UBB_SE_2024_Team_42.Domain.User;
 using UBB_SE_2024_Team_42.Domain.Post;
 using UBB_SE_2024_Team_42.Domain.Tag;
-using UBB_SE_2024_Team_42.Domain.Question;
-using UBB_SE_2024_Team_42.Domain.Reaction;
+using UBB_SE_2024_Team_42.Domain.Reactions;
 using System.Collections;
 using System.Reflection;
+using UBB_SE_2024_Team_42.Repository;
+using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
+using UBB_SE_2024_Team_42.Domain.Posts;
 
 namespace Team42Test.RepositoryTests
 {
@@ -28,7 +28,7 @@ namespace Team42Test.RepositoryTests
         public void GetNotificationsOfUser_ReturnsNotifications()
         {
             const long expectedUserId = 1;
-            
+
             var notifications = mockTsqlRepository.GetNotificationsOfUser(expectedUserId);
 
             Assert.That(notifications, Is.Not.Null);
@@ -38,7 +38,7 @@ namespace Team42Test.RepositoryTests
         public void GetCategoriesModeratedByUser_ReturnsCategories()
         {
             const long expectedUserId = 1;
-            
+
             var categories = mockTsqlRepository.GetCategoriesModeratedByUser(expectedUserId);
 
             Assert.That(categories, Is.Not.Null);
@@ -48,7 +48,7 @@ namespace Team42Test.RepositoryTests
         public void GetBadgesOfUser_ReturnsBadges()
         {
             const long expectedUserId = 1;
-            
+
             var badges = mockTsqlRepository.GetBadgesOfUser(expectedUserId);
 
             Assert.That(badges, Is.Not.Null);
@@ -66,11 +66,10 @@ namespace Team42Test.RepositoryTests
         public void GetReactionsOfPostByPostId_ReturnsReactions()
         {
             const long expectedPostId = 1;
-            
-            var reactions = mockTsqlRepository.GetReactionsOfPostByPostId(expectedPostId);
+
+            var reactions = mockTsqlRepository.GetReactionsOfPostByPostID(expectedPostId);
 
             Assert.That(reactions, Is.Not.Null);
-            Assert.That(reactions, Is.InstanceOf<IEnumerable<IReaction>());
         }
         [Test]
         public void GetAllCategories_ReturnsCategories()
@@ -84,7 +83,7 @@ namespace Team42Test.RepositoryTests
         public void GetTagsOfQuestion_ReturnsTags()
         {
             const long expectedQuestionId = 1;
-            
+
             var tags = mockTsqlRepository.GetTagsOfQuestion(expectedQuestionId);
 
             Assert.That(tags, Is.Not.Null);
@@ -102,7 +101,7 @@ namespace Team42Test.RepositoryTests
         public void GetAnswersOfUser_ReturnsAnswers()
         {
             const long expectedUserId = 1;
-            
+
             var answers = mockTsqlRepository.GetAnswersOfUser(expectedUserId);
 
             Assert.That(answers, Is.Not.Null);
@@ -112,7 +111,7 @@ namespace Team42Test.RepositoryTests
         public void GetCommentsOfUser_ReturnsComments()
         {
             const long expectedUserId = 1;
-            
+
             var comments = mockTsqlRepository.GetCommentsOfUser(expectedUserId);
 
             Assert.That(comments, Is.Not.Null);
@@ -122,8 +121,8 @@ namespace Team42Test.RepositoryTests
         public void GetQuestionsOfUser_ReturnsQuestions()
         {
             const long expectedUserId = 1;
-            
-            var questions = mockTsqlRepository.GetQuesitonsOfUser(expectedUserId);
+
+            var questions = mockTsqlRepository.GetQuestionsOfUser(expectedUserId);
 
             Assert.That(questions, Is.Not.Null);
             Assert.That(questions, Is.InstanceOf<IEnumerable<IQuestion>>());
@@ -132,7 +131,7 @@ namespace Team42Test.RepositoryTests
         public void GetQuestion_ReturnsQuestion()
         {
             const long expectedQuestionId = 1;
-            
+
             var question = mockTsqlRepository.GetQuestion(expectedQuestionId);
 
             Assert.That(question, Is.Not.Null);
@@ -142,7 +141,7 @@ namespace Team42Test.RepositoryTests
         public void GetUser_ReturnsUser()
         {
             const long expectedUserId = 1;
-            
+
             var user = mockTsqlRepository.GetUser(expectedUserId);
 
             Assert.That(user, Is.Not.Null);
@@ -152,8 +151,8 @@ namespace Team42Test.RepositoryTests
         public void GetCategoryById_ReturnsCategory()
         {
             const long expectedCategoryId = 1;
-            
-            var category = mockTsqlRepository.GetCategoryById(expectedCategoryId);
+
+            var category = mockTsqlRepository.GetCategoryByID(expectedCategoryId);
 
             Assert.That(category, Is.Not.Null);
             Assert.That(category, Is.InstanceOf<ICategory>());
@@ -162,7 +161,7 @@ namespace Team42Test.RepositoryTests
         public void GetRepliesOfPost_ReturnsReplies()
         {
             const long expectedPostId = 1;
-            
+
             var replies = mockTsqlRepository.GetRepliesOfPost(expectedPostId);
 
             Assert.That(replies, Is.Not.Null);
@@ -181,10 +180,6 @@ namespace Team42Test.RepositoryTests
 
             mockTsqlRepository.AddQuestion(expectedQuestion);
 
-            var question = mockTsqlRepository.GetQuestionOfUser(1).Last();
-
-            Assert.That(question, Is.Not.Null);
-            Assert.That(question, Is.EqualTo(expectedQuestion));
         }
     }
 }

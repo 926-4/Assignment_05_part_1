@@ -4,23 +4,23 @@ using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Service.EntityCreationServices;
 
-namespace Team42Test.FactoryTests
+namespace Team42Test.BuilderTests
 {
     [TestFixture]
-    public class AnswerFactoryTests
+    public class AnswerBuilderTests
     {
-        public AnswerFactory mockFactory;
+        public AnswerBuilder mockBuilder;
         [SetUp]
         public void Setup()
         {
-            mockFactory = new AnswerFactory();
+            mockBuilder = new AnswerBuilder();
         }
         [Test]
         public void Begin_InitializeNewInstance()
         {
-            mockFactory.Begin();
+            mockBuilder.Begin();
 
-            var answer  = mockFactory.End();
+            var answer  = mockBuilder.End();
             Assert.That(answer,Is.Not.Null);
             Assert.That(answer, Is.InstanceOf<IAnswer>());
         }
@@ -30,8 +30,8 @@ namespace Team42Test.FactoryTests
         {
             const long expectedId = 1;
             
-            mockFactory.SetId(expectedId);
-            var answer = mockFactory.End();
+            mockBuilder.SetId(expectedId);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.ID, Is.EqualTo(expectedId));
         }
@@ -41,8 +41,8 @@ namespace Team42Test.FactoryTests
         {
             const long expectedUserId = 1;
 
-            mockFactory.SetUserId(expectedUserId);
-            var answer = mockFactory.End();
+            mockBuilder.SetUserId(expectedUserId);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.UserID, Is.EqualTo(expectedUserId));
         }
@@ -52,8 +52,8 @@ namespace Team42Test.FactoryTests
         {
             const string expectedContent = "Hello";
 
-            mockFactory.SetContent(expectedContent);
-            var answer = mockFactory.End();
+            mockBuilder.SetContent(expectedContent);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Content, Is.EqualTo(expectedContent));
         }
@@ -63,8 +63,8 @@ namespace Team42Test.FactoryTests
         {
             DateTime expectedDatePosted = DateTime.Parse("2023-02-02");
 
-            mockFactory.SetDatePosted(expectedDatePosted);
-            var answer = mockFactory.End();
+            mockBuilder.SetDatePosted(expectedDatePosted);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.DatePosted, Is.EqualTo(expectedDatePosted));
         }
@@ -74,8 +74,8 @@ namespace Team42Test.FactoryTests
         {
             DateTime expectedDateOfLastEdit = DateTime.Parse("2023-02-02");
 
-            mockFactory.SetDateOfLastEdit(expectedDateOfLastEdit);
-            var answer = mockFactory.End();
+            mockBuilder.SetDateOfLastEdit(expectedDateOfLastEdit);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.DateOfLastEdit, Is.EqualTo(expectedDateOfLastEdit));
         }
@@ -85,8 +85,8 @@ namespace Team42Test.FactoryTests
         {
             var expectedReactionList = new List<IReaction>();
 
-            mockFactory.SetReactions(expectedReactionList);
-            var answer = mockFactory.End();
+            mockBuilder.SetReactions(expectedReactionList);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Reactions, Is.Empty);
             Assert.That(answer.Reactions, Is.EqualTo(expectedReactionList));
@@ -95,7 +95,7 @@ namespace Team42Test.FactoryTests
         [TearDown]
         public void TearDown()
         {
-            mockFactory = new AnswerFactory();
+            mockBuilder = new AnswerBuilder();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿
-namespace Team42Test.FactoryTests
+namespace Team42Test.BuilderTests
 {
     [TestFixture]
-    public class AbstractFactoryTests
+    public class AbstractBuilderTests
     {
         [SetUp]
         public void Setup()

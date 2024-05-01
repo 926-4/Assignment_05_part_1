@@ -11,23 +11,23 @@ using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.User;
 using UBB_SE_2024_Team_42.Service.EntityCreationServices;
 
-namespace Team42Test.FactoryTests
+namespace Team42Test.BuilderTests
 {
-    public class UserFactoryTests
+    public class UserBuilderTests
     {
-        public UserFactory mockFactory;
+        public UserBuilder mockBuilder;
         [SetUp]
         public void Setup()
         {
-            mockFactory = new UserFactory();
+            mockBuilder = new UserBuilder();
         }
 
         [Test]
         public void Begin_InitializeNewInstance()
         {
-            mockFactory.Begin();
+            mockBuilder.Begin();
 
-            var answer = mockFactory.End();
+            var answer = mockBuilder.End();
             Assert.That(answer, Is.Not.Null);
             Assert.That(answer, Is.InstanceOf<IUser>());
         }
@@ -37,8 +37,8 @@ namespace Team42Test.FactoryTests
         {
             const string expectedName = "Hello";
 
-            mockFactory.SetName(expectedName);
-            var answer = mockFactory.End();
+            mockBuilder.SetName(expectedName);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Name, Is.EqualTo(expectedName));
         }
@@ -48,8 +48,8 @@ namespace Team42Test.FactoryTests
         {
             List<INotification> expectedNotificationlist = [];
 
-            mockFactory.SetNotificationList(expectedNotificationlist);
-            var answer = mockFactory.End();
+            mockBuilder.SetNotificationList(expectedNotificationlist);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.NotificationList, Is.Empty);
             Assert.That(answer.NotificationList, Is.EqualTo(expectedNotificationlist));
@@ -60,8 +60,8 @@ namespace Team42Test.FactoryTests
         {
             List<ICategory> expectedCategories = [];
 
-            mockFactory.SetCategoriesModeratedList(expectedCategories);
-            var answer = mockFactory.End();
+            mockBuilder.SetCategoriesModeratedList(expectedCategories);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.CategoriesModeratedList, Is.Empty);
             Assert.That(answer.CategoriesModeratedList, Is.EqualTo(expectedCategories));
@@ -72,8 +72,8 @@ namespace Team42Test.FactoryTests
         {
             List<IBadge> expectedBadgelist = [];
 
-            mockFactory.SetBadgeList(expectedBadgelist);
-            var answer = mockFactory.End();
+            mockBuilder.SetBadgeList(expectedBadgelist);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.BadgeList, Is.Empty);
             Assert.That(answer.BadgeList, Is.EqualTo(expectedBadgelist));
@@ -82,7 +82,7 @@ namespace Team42Test.FactoryTests
         [TearDown]
         public void TearDown()
         {
-            mockFactory.End();
+            mockBuilder.End();
         }
     }
 }

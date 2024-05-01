@@ -9,22 +9,22 @@ using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.Tag;
 using UBB_SE_2024_Team_42.Service.EntityCreationServices;
 
-namespace Team42Test.FactoryTests
+namespace Team42Test.BuilderTests
 {
-    public class QuestionFactoryTests
+    public class QuestionBuilderTests
     {
-        public QuestionFactory mockFactory;
+        public QuestionBuilder mockBuilder;
         [SetUp]
         public void Setup()
         {
-            mockFactory = new QuestionFactory();
+            mockBuilder = new QuestionBuilder();
         }
         [Test]
         public void Begin_InitializeNewInstance()
         {
-            mockFactory.Begin();
+            mockBuilder.Begin();
 
-            var answer = mockFactory.End();
+            var answer = mockBuilder.End();
             Assert.That(answer, Is.Not.Null);
             Assert.That(answer, Is.InstanceOf<IQuestion>());
         }
@@ -34,8 +34,8 @@ namespace Team42Test.FactoryTests
         {
             const long expectedId = 1;
 
-            mockFactory.SetId(expectedId);
-            var answer = mockFactory.End();
+            mockBuilder.SetId(expectedId);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.ID, Is.EqualTo(expectedId));
         }
@@ -45,8 +45,8 @@ namespace Team42Test.FactoryTests
         {
             const string expectedTitle = "Hello";
 
-            mockFactory.SetTitle(expectedTitle);
-            var answer = mockFactory.End();
+            mockBuilder.SetTitle(expectedTitle);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Title, Is.EqualTo(expectedTitle));
         }
@@ -56,8 +56,8 @@ namespace Team42Test.FactoryTests
         {
             ICategory expectedCategory = new Category();
 
-            mockFactory.SetCategory(expectedCategory);
-            var answer = mockFactory.End();
+            mockBuilder.SetCategory(expectedCategory);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Category, Is.EqualTo(expectedCategory));
             Assert.That(answer.Category, Is.InstanceOf<ICategory>());
@@ -68,8 +68,8 @@ namespace Team42Test.FactoryTests
         {
             List<ITag> expectedTags = [];
 
-            mockFactory.SetTags(expectedTags);
-            var answer = mockFactory.End();
+            mockBuilder.SetTags(expectedTags);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Tags, Is.Empty);
             Assert.That(answer.Tags, Is.EqualTo(expectedTags));
@@ -80,8 +80,8 @@ namespace Team42Test.FactoryTests
         {
             const long expectedUserId = 1;
 
-            mockFactory.SetUserId(expectedUserId);
-            var answer = mockFactory.End();
+            mockBuilder.SetUserId(expectedUserId);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.UserID, Is.EqualTo(expectedUserId));
         }
@@ -91,8 +91,8 @@ namespace Team42Test.FactoryTests
         {
             const string expectedContent = "Hello";
 
-            mockFactory.SetContent(expectedContent);
-            var answer = mockFactory.End();
+            mockBuilder.SetContent(expectedContent);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Content, Is.EqualTo(expectedContent));
         }
@@ -102,8 +102,8 @@ namespace Team42Test.FactoryTests
         {
             DateTime expectedDatePosted = DateTime.Parse("2023-02-02");
 
-            mockFactory.SetPostTime(expectedDatePosted);
-            var answer = mockFactory.End();
+            mockBuilder.SetPostTime(expectedDatePosted);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.DatePosted, Is.EqualTo(expectedDatePosted));
         }
@@ -113,8 +113,8 @@ namespace Team42Test.FactoryTests
         {
             DateTime expectedDateOfLastEdit = DateTime.Parse("2023-02-02");
 
-            mockFactory.SetEditTime(expectedDateOfLastEdit);
-            var answer = mockFactory.End();
+            mockBuilder.SetEditTime(expectedDateOfLastEdit);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.DateOfLastEdit, Is.EqualTo(expectedDateOfLastEdit));
         }
@@ -124,8 +124,8 @@ namespace Team42Test.FactoryTests
         {
             var expectedReactionList = new List<IReaction>();
 
-            mockFactory.SetReactions(expectedReactionList);
-            var answer = mockFactory.End();
+            mockBuilder.SetReactions(expectedReactionList);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Reactions, Is.Empty);
             Assert.That(answer.Reactions, Is.EqualTo(expectedReactionList));
@@ -134,7 +134,7 @@ namespace Team42Test.FactoryTests
         [TearDown]
         public void TearDown()
         {
-            mockFactory.End();
+            mockBuilder.End();
         }
     }
 }
