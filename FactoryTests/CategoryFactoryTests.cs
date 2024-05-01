@@ -2,24 +2,24 @@
 using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Service.EntityCreationServices;
 
-namespace Team42Test.FactoryTests
+namespace Team42Test.BuilderTests
 {
     [TestFixture]
-    public class CategoryFactoryTests
+    public class CategoryBuilderTests
     {
-        public CategoryFactory mockFactory;
+        public CategoryBuilder mockBuilder;
         [SetUp]
         public void Setup()
         {
-            mockFactory = new CategoryFactory();
+            mockBuilder = new CategoryBuilder();
         }
 
         [Test]
         public void Begin_InitializeNewInstance()
         {
-            mockFactory.Begin();
+            mockBuilder.Begin();
 
-            var answer = mockFactory.End();
+            var answer = mockBuilder.End();
             Assert.That(answer, Is.Not.Null);
             Assert.That(answer, Is.InstanceOf<ICategory>());
         }
@@ -29,8 +29,8 @@ namespace Team42Test.FactoryTests
         {
             const long expectedId = 1;
 
-            mockFactory.SetID(expectedId);
-            var answer = mockFactory.End();
+            mockBuilder.SetID(expectedId);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.ID, Is.EqualTo(expectedId));
         }
@@ -40,8 +40,8 @@ namespace Team42Test.FactoryTests
         {
             const string expectedName = "Hello";
 
-            mockFactory.SetName(expectedName);
-            var answer = mockFactory.End();
+            mockBuilder.SetName(expectedName);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Name, Is.EqualTo(expectedName));
         }
@@ -49,7 +49,7 @@ namespace Team42Test.FactoryTests
         [TearDown]
         public void TearDown()
         {
-            mockFactory.End();
+            mockBuilder.End();
         }
     }
 }

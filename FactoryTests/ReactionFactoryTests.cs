@@ -7,24 +7,24 @@ using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.Tag;
 using UBB_SE_2024_Team_42.Service.EntityCreationServices;
 
-namespace Team42Test.FactoryTests
+namespace Team42Test.BuilderTests
 {
     [TestFixture]
-    public class ReactionFactoryTests
+    public class ReactionBuilderTests
     {
-        public ReactionFactory mockFactory;
+        public ReactionBuilder mockBuilder;
         [SetUp]
         public void Setup()
         {
-            mockFactory = new ReactionFactory();
+            mockBuilder = new ReactionBuilder();
         }
 
         [Test]
         public void Begin_InitializeNewInstance()
         {
-            mockFactory.Begin();
+            mockBuilder.Begin();
 
-            var answer = mockFactory.End();
+            var answer = mockBuilder.End();
             Assert.That(answer, Is.Not.Null);
             Assert.That(answer, Is.InstanceOf<IReaction>());
         }
@@ -34,8 +34,8 @@ namespace Team42Test.FactoryTests
         {
             const int expectedReactionValue = 1;
 
-            mockFactory.SetReactionValue(expectedReactionValue);
-            var answer = mockFactory.End();
+            mockBuilder.SetReactionValue(expectedReactionValue);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Value, Is.EqualTo(expectedReactionValue));
         }
@@ -45,8 +45,8 @@ namespace Team42Test.FactoryTests
         {
             const int expectedUserId = 1;
 
-            mockFactory.SetReacterUserId(expectedUserId);
-            var answer = mockFactory.End();
+            mockBuilder.SetReacterUserId(expectedUserId);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.UserID, Is.EqualTo(expectedUserId));
         }
@@ -54,7 +54,7 @@ namespace Team42Test.FactoryTests
         [TearDown]
         public void TearDown()
         {
-            mockFactory.End();
+            mockBuilder.End();
         }
     }
 }

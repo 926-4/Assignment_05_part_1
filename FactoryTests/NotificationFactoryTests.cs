@@ -7,24 +7,24 @@ using UBB_SE_2024_Team_42.Domain.Notification;
 using UBB_SE_2024_Team_42.Domain.Post;
 using UBB_SE_2024_Team_42.Service.EntityCreationServices;
 
-namespace Team42Test.FactoryTests
+namespace Team42Test.BuilderTests
 {
     [TestFixture]
-    public class NotificationFactoryTests
+    public class NotificationBuilderTests
     {
-        public NotificationFactory mockFactory;
+        public NotificationBuilder mockBuilder;
         [SetUp]
         public void Setup()
         {
-            mockFactory = new NotificationFactory();
+            mockBuilder = new NotificationBuilder();
         }
 
         [Test]
         public void Begin_InitializeNewInstance()
         {
-            mockFactory.Begin();
+            mockBuilder.Begin();
 
-            var answer = mockFactory.End();
+            var answer = mockBuilder.End();
             Assert.That(answer, Is.Not.Null);
             Assert.That(answer, Is.InstanceOf<INotification>());
         }
@@ -34,8 +34,8 @@ namespace Team42Test.FactoryTests
         {
             const long expectedId = 1;
 
-            mockFactory.SetID(expectedId);
-            var answer = mockFactory.End();
+            mockBuilder.SetID(expectedId);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.ID, Is.EqualTo(expectedId));
         }
@@ -45,8 +45,8 @@ namespace Team42Test.FactoryTests
         {
             const string expectedText = "hello";
 
-            mockFactory.SetText(expectedText);
-            var answer = mockFactory.End();
+            mockBuilder.SetText(expectedText);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.Text, Is.EqualTo(expectedText));
         }
@@ -56,8 +56,8 @@ namespace Team42Test.FactoryTests
         {
             const long expectedPostId = 1;
 
-            mockFactory.SetPostID(expectedPostId);
-            var answer = mockFactory.End();
+            mockBuilder.SetPostID(expectedPostId);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.PostID, Is.EqualTo(expectedPostId));
         }
@@ -67,8 +67,8 @@ namespace Team42Test.FactoryTests
         {
             const long expectedBadgeId = 1;
 
-            mockFactory.SetBadgeId(expectedBadgeId);
-            var answer = mockFactory.End();
+            mockBuilder.SetBadgeId(expectedBadgeId);
+            var answer = mockBuilder.End();
 
             Assert.That(answer.BadgeID, Is.EqualTo(expectedBadgeId));
         }
@@ -76,7 +76,7 @@ namespace Team42Test.FactoryTests
         [TearDown]
         public void TearDown()
         {
-            mockFactory.End();
+            mockBuilder.End();
         }
     }
 }
