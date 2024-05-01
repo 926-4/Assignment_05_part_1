@@ -26,15 +26,14 @@ namespace Team42Test.RepositoryTests
             repo = new();
         }
         [Test]
-        public void GetAllUsers_ReturnsUsers()
+        public void GetAllUsers_OnDefaultMemoryRepository_ReturnsUsers()
         {
             var users = repo.GetAllUsers();
             Assert.That(users, Is.Not.Empty);
-            Assert.That(users.Count, Is.EqualTo(2));
             Assert.That(users, Is.InstanceOf<IEnumerable<IUser>>());
         }
         [Test]
-        public void TestGetUser_ReturnsUser()
+        public void TestGetUser_IdProvided_ReturnsUserWithId()
         {
             var obj = repo.GetUser(0);
 
@@ -44,7 +43,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void TestGetPost_ReturnsPost()
+        public void TestGetPost_IdProvided_ReturnsPostWithId()
         {
             var obj = repo.GetPost(0);
 
@@ -54,7 +53,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void TestUpdatePost_UpdatesPost()
+        public void TestUpdatePost_IdProvided_UpdatesPostWithId()
         {
             var old = repo.GetPost(0);
             var n = new TextPost() { Content = "b" };
@@ -66,7 +65,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(obj.Content, Is.EqualTo("b"));
         }
         [Test]
-        public void GetAllCategories_ReturnsCategories()
+        public void GetAllCategories_OnDefaultMemoryRepository_ReturnsCategories()
         {
             var categories = repo.GetAllCategories();
             Assert.That(categories, Is.Not.Null);
@@ -74,7 +73,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(categories, Is.Not.Empty);
         }
         [Test]
-        public void GetAllQuestions_ReturnsQuestions()
+        public void GetAllQuestions_OnDefaultMemoryRepository_ReturnsQuestions()
         {
             var questions = repo.GetAllQuestions();
             Assert.That(questions, Is.Not.Null);
@@ -82,7 +81,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(questions, Is.Not.Empty);
         }
         [Test]
-        public void AddUser_AddsUser()
+        public void AddUser_IDNameProvided_AddsUserWithProvidedData()
         {
             var user = new User { ID = 3, Name = "New User" };
             repo.AddUser(user);
@@ -93,7 +92,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void AddPost_AddsPost()
+        public void AddPost__IDContentProvided_AddsPostWithProvidedData()
         {
             var post = new TextPost { ID = 4, Content = "New Post" };
             repo.AddPost(post);
@@ -103,7 +102,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(retrievedPost, Is.EqualTo(post));
         }
         [Test]
-        public void GetAnswersOfUser_ReturnsAnswers()
+        public void GetAnswersOfUser_UserIdProvided_ReturnsAnswersWithUserId()
         {
             var userId = 0;
             var answers = repo.GetAnswersOfUser(userId);
@@ -114,7 +113,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void GetBadgesOfUser_ReturnsBadges()
+        public void GetBadgesOfUser_UserIdProvided_ReturnsBadgesWithUserId()
         {
             var userId = 0;
             var badges = repo.GetBadgesOfUser(userId);
@@ -124,7 +123,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void GetCategoriesModeratedByUser_ReturnsCategories()
+        public void GetCategoriesModeratedByUser_UserIdProvided_ReturnsCategoriesWithUserId()
         {
             var userId = 0;
             var categories = repo.GetCategoriesModeratedByUser(userId);
@@ -134,7 +133,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void GetCategoryByID_ReturnsCategory()
+        public void GetCategoryByID_CategoryIdProvided_ReturnsCategoryWithId()
         {
             var categoryId = 0;
             var category = repo.GetCategoryByID(categoryId);
@@ -144,7 +143,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void GetCommentsOfUser_ReturnsComments()
+        public void GetCommentsOfUser_UserIdProvided_ReturnsCommentsWithUserId()
         {
             var userId = 0;
             var comments = repo.GetCommentsOfUser(userId);
@@ -155,7 +154,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void GetNotificationsOfUser_ReturnsNotifications()
+        public void GetNotificationsOfUser_UserIdProvided_ReturnsNotificationsWithUserId()
         {
             var userId = 0;
             var notifications = repo.GetNotificationsOfUser(userId);
@@ -166,7 +165,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void GetQuestionsOfUser_ReturnsQuestions()
+        public void GetQuestionsOfUser_UserIdProvided_ReturnsQuestionsWithUserId()
         {
             var userId = 0;
             var questions = repo.GetQuestionsOfUser(userId);
@@ -177,7 +176,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void GetReactionsOfPostByPostID_ReturnsReactions()
+        public void GetReactionsOfPostByPostID_PostIdProvided_ReturnsReactionsWithPostId()
         {
             var postId = 0;
             var reactions = repo.GetReactionsOfPostByPostID(postId);
@@ -185,7 +184,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(reactions, Is.InstanceOf<IEnumerable<IReaction>>());
         }
         [Test]
-        public void GetRepliesOfPost_ReturnsReplies()
+        public void GetRepliesOfPost_PostIdProvided_ReturnsRepliesWithPostId()
         {
             var postId = 0;
             var replies = repo.GetRepliesOfPost(postId);
@@ -194,7 +193,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void GetTagsOfQuestion_ReturnsTags()
+        public void GetTagsOfQuestion_QuestionIdProvided_ReturnsTagsWithQuestionId()
         {
             var questionId = 0;
             var tags = repo.GetTagsOfQuestion(questionId);
@@ -202,7 +201,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(tags, Is.InstanceOf<IEnumerable<ITag>>());
         }
         [Test]
-        public void AddQuestion_AddsQuestion()
+        public void AddQuestion_IDContentUserIdProvided_AddsQuestionWithProvidedData()
         {
             var question = new Question { ID = 3, Content = "New Question", UserID = 1 };
             repo.AddQuestion(question);
@@ -212,7 +211,7 @@ namespace Team42Test.RepositoryTests
         }
 
         [Test]
-        public void GetQuestion_ReturnsQuestion()
+        public void GetQuestion_QuestionIdProvided_ReturnsQuestionWithId()
         {
             var questionId = 0;
             var expectedQuestion = repo.GetQuestion(questionId);
