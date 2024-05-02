@@ -8,6 +8,7 @@ using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Post;
 using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Posts;
+using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.Tag;
 using UBB_SE_2024_Team_42.Domain.User;
 using UBB_SE_2024_Team_42.Repository;
@@ -182,6 +183,30 @@ namespace Team42Test.ServiceTests
         [Test]
         public void GetQuestionsSortedByScoreAscending_()
         {
+            Reaction reaction1 = new ();
+            reaction1.Value = 10;
+            Reaction reaction2 = new();
+            reaction2.Value = 50;
+            Reaction reaction3 = new();
+            reaction3.Value = 100;
+
+            List<IReaction> question1Reactions = new List<IReaction> { reaction1, reaction2, reaction3};  // Score = 160
+            List<IReaction> question2Reactions = new List<IReaction> { reaction2, reaction2, reaction2};  // Score = 150
+            List<IReaction> question3Reactions = new List<IReaction> { reaction1, reaction1, reaction3};  // Score = 120
+
+            Question question1 = new Question();
+            question1.Reactions = question1Reactions;
+            Question question2 = new Question();
+            question2.Reactions = question2Reactions;
+            Question question3 = new Question();
+            question3.Reactions = question3Reactions;
+
+            mockService.AddQuestionByObject(question1);
+            mockService.AddQuestionByObject(question2);
+            mockService.AddQuestionByObject(question3);
+
+            List<IQuestion> receivedQuestions = mockService.GetAllQuestions();
+            List<IQuestion> receivedSortedQuestions = mockService.GetQuestionsSortedByScoreAscending();
 
         }
 
