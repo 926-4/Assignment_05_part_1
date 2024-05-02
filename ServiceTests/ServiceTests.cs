@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UBB_SE_2024_Team_42.Domain.Badge;
 using UBB_SE_2024_Team_42.Domain.Category;
+using UBB_SE_2024_Team_42.Domain.Post;
 using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Tag;
@@ -274,21 +275,96 @@ namespace Team42Test.ServiceTests
         }
 
         [Test]
-        public void GetAnswersOfUser_()
+        public void GetAnswersOfUser_UsersAndAnswersProvided_ReturnsAnswersOfUsers()
         {
+            IUser user1 = new User();
+            user1.ID = 1337;
+            IUser user2 = new User();
+            user2.ID = 1338;
 
+            IAnswer answer1ForUser1 = new Answer();
+            answer1ForUser1.UserID = user1.ID;
+            IAnswer answer2ForUser1 = new Answer();
+            answer2ForUser1.UserID = user1.ID;
+            IAnswer answer3ForUser1 = new Answer();
+            answer2ForUser1.UserID = user1.ID;
+
+            mockService.AddPost(answer1ForUser1);
+            mockService.AddPost(answer2ForUser1);
+            mockService.AddPost(answer3ForUser1);
+
+            List<IAnswer> user1Answers = mockService.GetAnswersOfUser(user1.ID);
+            List<IAnswer> user2Answers = mockService.GetAnswersOfUser(user2.ID);
+
+            Assert.That(user1Answers, Is.Not.Null);
+            Assert.That(user1Answers, Is.InstanceOf<IEnumerable<IAnswer>>());
+            Assert.That(user1Answers, Is.Not.Empty);
+            Assert.That(user1Answers.Count, Is.EqualTo(3));
+            Assert.That(user2Answers, Is.Not.Null);
+            Assert.That(user2Answers, Is.InstanceOf<IEnumerable<IAnswer>>());
+            Assert.That(user2Answers, Is.Empty);
         }
 
         [Test]
-        public void GetQuestionsOfUser_()
+        public void GetQuestionsOfUser_UsersAndQuestionsProvided_ReturnsQuestionsOfUsers()
         {
+            User user1 = new User();
+            user1.ID = 1337;
+            User user2 = new User();
+            user2.ID = 1338;
 
+            Question question1 = new Question();
+            question1.UserID = user1.ID;
+            Question question2 = new Question();
+            question2.UserID = user1.ID;
+            Question question3 = new Question();
+            question3.UserID = user1.ID;
+
+            mockService.AddQuestionByObject(question1);
+            mockService.AddQuestionByObject(question2);
+            mockService.AddQuestionByObject(question3);
+
+            List<IQuestion> user1Questions = mockService.GetQuestionsOfUser(user1.ID);
+            List<IQuestion> user2Questions = mockService.GetQuestionsOfUser(user2.ID);
+
+            Assert.That(user1Questions, Is.Not.Null);
+            Assert.That(user1Questions, Is.InstanceOf<IEnumerable<IQuestion>>());
+            Assert.That(user1Questions, Is.Not.Empty);
+            Assert.That(user1Questions.Count, Is.EqualTo(3));
+            Assert.That(user2Questions, Is.Not.Null);
+            Assert.That(user2Questions, Is.InstanceOf<IEnumerable<IQuestion>>());
+            Assert.That(user2Questions, Is.Empty);
         }
 
         [Test]
-        public void GetCommentsOfUser_()
+        public void GetCommentsOfUser_UsersAndCommentsProvided_ReturnsCommentsOfUsers()
         {
+            User user1 = new User();
+            user1.ID = 1337;
+            User user2 = new User();
+            user2.ID = 1338;
 
+            Comment comment1 = new Comment();
+            comment1.UserID = user1.ID;
+            Comment comment2 = new Comment();
+            comment2.UserID = user1.ID;
+            Comment comment3 = new Comment();
+            comment3.UserID = user1.ID;
+
+            mockService.AddPost(comment1);
+            mockService.AddPost(comment2);
+            mockService.AddPost(comment3);
+
+            List<IComment> user1Comments = mockService.GetCommentsOfUser(user1.ID);
+            List<IComment> user2Comments = mockService.GetCommentsOfUser(user2.ID);
+
+            Assert.That(user1Comments, Is.Not.Null);
+            Assert.That(user1Comments, Is.InstanceOf<IEnumerable<IComment>>());
+            Assert.That(user1Comments, Is.Not.Empty);
+            Assert.That(user1Comments.Count, Is.EqualTo(3));
+            Assert.That(user2Comments, Is.Not.Null);
+            Assert.That(user2Comments, Is.InstanceOf<IEnumerable<IComment>>());
+            Assert.That(user2Comments, Is.Empty);
         }
 
         [Test]
@@ -297,6 +373,7 @@ namespace Team42Test.ServiceTests
             ITag tag1 = new Tag();
             IQuestion question1 = new Question();
             List<ITag> question1Tags = new List<ITag> { tag1 };
+            question1.Tags = question1Tags;
 
             IQuestion question2 = new Question();
 
@@ -307,9 +384,9 @@ namespace Team42Test.ServiceTests
             Assert.That(receivedQuestion1Tags, Is.InstanceOf<IEnumerable<ITag>>());
             Assert.That(receivedQuestion1Tags, Is.Not.Empty);
 
-            Assert.That(receivedQuestion1Tags, Is.Not.Null);
-            Assert.That(receivedQuestion1Tags, Is.InstanceOf<IEnumerable<ITag>>());
-            Assert.That(receivedQuestion1Tags, Is.Empty);
+            Assert.That(receivedQuestion2Tags, Is.Not.Null);
+            Assert.That(receivedQuestion2Tags, Is.InstanceOf<IEnumerable<ITag>>());
+            Assert.That(receivedQuestion2Tags, Is.Empty);
         }
 
         [Test]
@@ -335,9 +412,25 @@ namespace Team42Test.ServiceTests
         }
 
         [Test]
-        public void FilterQuestionsByLast7Days_()
+        public void FilterQuestionsByLast7Days_QuestionsProvided_ReturnsQuestionsByLast7DaysCount()
         {
+            IQuestion question1 = new Question();
+            question1.DatePosted = DateTime.Now;
 
+            IQuestion question2 = new Question();
+            question2.DatePosted = DateTime.Now;
+
+            IQuestion question3 = new Question();
+            question3.DatePosted = DateTime.Now.AddDays(-8);
+
+            mockService.AddQuestionByObject(question1);
+            mockService.AddQuestionByObject(question2);
+            mockService.AddQuestionByObject(question3);
+
+            int questionsByLast7DaysCount = mockService.FilterQuestionsByLast7Days();
+
+            Assert.That(questionsByLast7DaysCount, Is.Not.Empty);
+            Assert.That(questionsByLast7DaysCount, Is.GreaterThanOrEqualTo(2));
         }
 
         [Test]
