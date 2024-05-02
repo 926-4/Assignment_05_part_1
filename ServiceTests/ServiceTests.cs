@@ -83,9 +83,48 @@ namespace Team42Test.ServiceTests
         }
 
         [Test]
-        public void GetRepliesOfPost_()
+        public void AddPostReply_PostReplyProvided_ReturnsPostReply()
         {
+            IPost post1 = new TextPost();
+            post1.ID = 2024;
 
+            IPost post2 = new TextPost();
+            post2.ID = 1337;
+
+            IPost reply1 = new TextPost();
+
+            mockService.AddPostReply(reply1, post1.ID);
+
+            long post1RepliesCount = mockService.GetRepliesOfPost(post1.ID).Count;
+            long post2RepliesCount = mockService.GetRepliesOfPost(post2.ID).Count;
+
+            Assert.That(post1RepliesCount, Is.EqualTo(1));
+            Assert.That(post2RepliesCount, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void GetRepliesOfPost_PostIdProvided_ReturnsRepliesOfPost()
+        {
+            IPost post1 = new TextPost();
+            post1.ID = 2024;
+
+            IPost post2 = new TextPost();
+            post2.ID = 1337;
+
+            IPost replyOfPost2 = new TextPost();
+
+            mockService.AddPostReply(replyOfPost2, post2.ID);
+
+            List<IPost> repliesOfPost1 = mockService.GetRepliesOfPost(post1.ID);
+            List<IPost> repliesOfPost2 = mockService.GetRepliesOfPost(post2.ID);
+
+            Assert.That(repliesOfPost1, Is.Not.Null);
+            Assert.That(repliesOfPost1, Is.InstanceOf<IEnumerable<IPost>>());
+            Assert.That(repliesOfPost1, Is.Empty);
+
+            Assert.That(repliesOfPost2, Is.Not.Null);
+            Assert.That(repliesOfPost2, Is.InstanceOf<IEnumerable<IPost>>());
+            Assert.That(repliesOfPost2.Count, Is.EqualTo(1));
         }
 
         [Test]
