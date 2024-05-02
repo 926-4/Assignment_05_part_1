@@ -10,6 +10,7 @@ using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Tag;
 using UBB_SE_2024_Team_42.Domain.User;
+using UBB_SE_2024_Team_42.Repository;
 using UBB_SE_2024_Team_42.Service;
 
 namespace Team42Test.ServiceTests
@@ -62,15 +63,16 @@ namespace Team42Test.ServiceTests
         }
 
         [Test]
-        public void GetQuestion_QuestionIdProvided_ReturnsQuestion()
+        public void GetQuestion_QuestionProvided_ReturnsQuestion()
         {
-            long questionId = 0;
+            Question question = new Question();
+            question.ID = 1337;
 
-            IQuestion question = mockService.GetQuestion(questionId);
+            IQuestion receivedQuestion = mockService.GetQuestion(question.ID);
 
-            Assert.That(question, Is.Not.Null);
-            Assert.That(question, Is.InstanceOf<IQuestion>());
-            Assert.That(question.ID, Is.EqualTo(questionId));
+            Assert.That(receivedQuestion, Is.Not.Null);
+            Assert.That(receivedQuestion, Is.InstanceOf<IQuestion>());
+            Assert.That(receivedQuestion.ID, Is.EqualTo(question.ID));
         }
 
         [Test]
