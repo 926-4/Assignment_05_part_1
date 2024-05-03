@@ -219,6 +219,5 @@ namespace Team42Test.RepositoryTests
             Assert.That(retrievedQuestion, Is.Not.Null);
             Assert.That(retrievedQuestion, Is.EqualTo(expectedQuestion));
         }
-
     }
 }
