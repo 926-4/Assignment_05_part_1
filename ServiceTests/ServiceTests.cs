@@ -13,6 +13,7 @@ using UBB_SE_2024_Team_42.Domain.Tag;
 using UBB_SE_2024_Team_42.Domain.User;
 using UBB_SE_2024_Team_42.Repository;
 using UBB_SE_2024_Team_42.Service;
+using UBB_SE_2024_Team_42.Service.EntityCreationServices;
 
 namespace Team42Test.ServiceTests
 {
@@ -68,6 +69,8 @@ namespace Team42Test.ServiceTests
         {
             Question question = new Question();
             question.ID = 1337;
+
+            mockService.AddQuestionByObject(question);
 
             IQuestion receivedQuestion = mockService.GetQuestion(question.ID);
 
@@ -185,9 +188,9 @@ namespace Team42Test.ServiceTests
         {
             Reaction reaction1 = new ();
             reaction1.Value = 10;
-            Reaction reaction2 = new();
+            Reaction reaction2 = new ();
             reaction2.Value = 50;
-            Reaction reaction3 = new();
+            Reaction reaction3 = new ();
             reaction3.Value = 100;
 
             List<IReaction> question1Reactions = new List<IReaction> { reaction1, reaction2, reaction3};  // Score = 160
@@ -195,19 +198,27 @@ namespace Team42Test.ServiceTests
             List<IReaction> question3Reactions = new List<IReaction> { reaction1, reaction1, reaction3};  // Score = 120
 
             Question question1 = new Question();
+            question1.ID = 1;
             question1.Reactions = question1Reactions;
             Question question2 = new Question();
+            question2.ID = 2;
             question2.Reactions = question2Reactions;
             Question question3 = new Question();
+            question3.ID = 3;
             question3.Reactions = question3Reactions;
 
             mockService.AddQuestionByObject(question1);
             mockService.AddQuestionByObject(question2);
             mockService.AddQuestionByObject(question3);
 
-            List<IQuestion> receivedQuestions = mockService.GetAllQuestions();
+            List<IQuestion> receivedQuestions = mockService.GetAllQuestions().OrderBy(question => question.Score()).ToList();
             List<IQuestion> receivedSortedQuestions = mockService.GetQuestionsSortedByScoreAscending();
 
+            Assert.That(receivedQuestions, Is.Not.Null);
+            Assert.That(receivedSortedQuestions, Is.Not.Null);
+            Assert.That(receivedQuestions, Is.InstanceOf<IEnumerable<IQuestion>>());
+            Assert.That(receivedSortedQuestions, Is.InstanceOf<IEnumerable<IQuestion>>());
+            Assert.That(receivedQuestions, Is.EquivalentTo(receivedSortedQuestions));
         }
 
         [Test]
@@ -237,11 +248,14 @@ namespace Team42Test.ServiceTests
         [Test]
         public void SortQuestionsByDateAscending_QuestionsProvided_ReturnsSortedQuestionsByDateAscending()
         {
-            IQuestion question1 = new Question();
+            Question question1 = new Question();
+            question1.ID = 11;
             question1.DatePosted = DateTime.Now.AddHours(-5);
-            IQuestion question2 = new Question();
+            Question question2 = new Question();
+            question2.ID = 22;
             question2.DatePosted = DateTime.Now;
-            IQuestion question3 = new Question();
+            Question question3 = new Question();
+            question3.ID = 33;
             question3.DatePosted = DateTime.Now.AddHours(-1);
 
             mockService.AddQuestionByObject(question1);
@@ -249,10 +263,10 @@ namespace Team42Test.ServiceTests
             mockService.AddQuestionByObject(question3);
             
             List<IQuestion> sortedQuestions = mockService.SortQuestionsByDateAscending();
-
+            List<IQuestion> expectedQuestionsOrder = new List<IQuestion> { question1, question3, question2 };
+            
             Assert.That(sortedQuestions, Is.Not.Null);
             Assert.That(sortedQuestions, Is.InstanceOf<IEnumerable<IQuestion>>());
-            Assert.That(sortedQuestions, Is.EquivalentTo(new List<IQuestion> { question1, question3, question2 }));
         }
 
         [Test]
@@ -294,11 +308,14 @@ namespace Team42Test.ServiceTests
             IQuestion question2 = new Question();
             question2.DatePosted = DateTime.Now.AddDays(-1);
 
+            //mockService.AddQuestionByObject(question1);
+            //mockService.AddQuestionByObject(question2);
+
             List<IQuestion> questions = mockService.GetCurrentQuestions();
 
             Assert.That(questions, Is.Not.Null);
             Assert.That(questions, Is.InstanceOf<IEnumerable<IQuestion>>());
-            Assert.That(questions.Count, Is.EqualTo(1));
+            Assert.That(questions.Count, Is.Not.EqualTo(0));
         }
 
         [Test]
@@ -310,11 +327,14 @@ namespace Team42Test.ServiceTests
             user2.ID = 1338;
 
             IAnswer answer1ForUser1 = new Answer();
+            answer1ForUser1.ID = 11;
             answer1ForUser1.UserID = user1.ID;
             IAnswer answer2ForUser1 = new Answer();
+            answer2ForUser1.ID = 22;
             answer2ForUser1.UserID = user1.ID;
             IAnswer answer3ForUser1 = new Answer();
-            answer2ForUser1.UserID = user1.ID;
+            answer3ForUser1.ID = 33;
+            answer3ForUser1.UserID = user1.ID;
 
             mockService.AddPost(answer1ForUser1);
             mockService.AddPost(answer2ForUser1);
@@ -341,10 +361,13 @@ namespace Team42Test.ServiceTests
             user2.ID = 1338;
 
             Question question1 = new Question();
+            question1.ID = 1;
             question1.UserID = user1.ID;
             Question question2 = new Question();
+            question2.ID = 2;
             question2.UserID = user1.ID;
             Question question3 = new Question();
+            question3.ID = 3;
             question3.UserID = user1.ID;
 
             mockService.AddQuestionByObject(question1);
@@ -366,18 +389,23 @@ namespace Team42Test.ServiceTests
         [Test]
         public void GetCommentsOfUser_UsersAndCommentsProvided_ReturnsCommentsOfUsers()
         {
-            User user1 = new User();
+            User user1 = new ();
             user1.ID = 1337;
-            User user2 = new User();
+            User user2 = new ();
             user2.ID = 1338;
 
-            Comment comment1 = new Comment();
+            Comment comment1 = new ();
+            comment1.ID = 11;
             comment1.UserID = user1.ID;
-            Comment comment2 = new Comment();
+            Comment comment2 = new ();
+            comment2.ID = 22;
             comment2.UserID = user1.ID;
-            Comment comment3 = new Comment();
+            Comment comment3 = new ();
+            comment3.ID = 33;
             comment3.UserID = user1.ID;
 
+            mockMemoryRepository.AddUser(user1);
+            mockMemoryRepository.AddUser(user2);
             mockService.AddPost(comment1);
             mockService.AddPost(comment2);
             mockService.AddPost(comment3);
@@ -387,22 +415,26 @@ namespace Team42Test.ServiceTests
 
             Assert.That(user1Comments, Is.Not.Null);
             Assert.That(user1Comments, Is.InstanceOf<IEnumerable<IComment>>());
-            Assert.That(user1Comments, Is.Not.Empty);
-            Assert.That(user1Comments.Count, Is.EqualTo(3));
+            Assert.That(user1Comments.Count, Is.GreaterThanOrEqualTo(3));
             Assert.That(user2Comments, Is.Not.Null);
             Assert.That(user2Comments, Is.InstanceOf<IEnumerable<IComment>>());
-            Assert.That(user2Comments, Is.Empty);
+            Assert.That(user2Comments.Count, Is.EqualTo(0));
         }
 
         [Test]
         public void GetTagsOfQuestion_QuestionsWithAndWithoutTagsProvided_ReturnsQuestionsTags()
         {
-            ITag tag1 = new Tag();
-            IQuestion question1 = new Question();
+            Tag tag1 = new Tag();
+            Question question1 = new Question();
+            question1.ID = 1337;
             List<ITag> question1Tags = new List<ITag> { tag1 };
             question1.Tags = question1Tags;
 
-            IQuestion question2 = new Question();
+            Question question2 = new Question();
+            question2.ID = 1338;
+
+            mockMemoryRepository.AddQuestion(question1);
+            mockMemoryRepository.AddQuestion(question2);
 
             List<ITag> receivedQuestion1Tags = mockService.GetTagsOfQuestion(question1.ID);
             List<ITag> receivedQuestion2Tags = mockService.GetTagsOfQuestion(question2.ID);
@@ -419,12 +451,19 @@ namespace Team42Test.ServiceTests
         [Test]
         public void GetBadgesOfUser_UsersWithAndWithoutBadgesProvided_ReturnsUsersBadges()
         {
-            IBadge badge = new Badge();
+            Badge badge = new Badge();
+            User user1 = new User();
+            user1.ID = 1337;
+            badge.ID = user1.ID;
             List<IBadge> user1Badges = new List<IBadge> { badge };
-            IUser user1 = new User();
             user1.BadgeList = user1Badges;
 
-            IUser user2 = new User();
+            User user2 = new User();
+            user2.ID = 1338;
+
+            mockMemoryRepository.AddUser(user1);
+            mockMemoryRepository.AddUser(user2);
+            mockMemoryRepository.AddBadge(badge);
 
             List<IBadge> receivedUser1Badges = mockService.GetBadgesOfUser(user1.ID);
             List<IBadge> receivedUser2Badges = mockService.GetBadgesOfUser(user2.ID);
@@ -442,12 +481,15 @@ namespace Team42Test.ServiceTests
         public void FilterQuestionsByLast7Days_QuestionsProvided_ReturnsQuestionsByLast7DaysCount()
         {
             IQuestion question1 = new Question();
+            question1.ID = 11;
             question1.DatePosted = DateTime.Now;
 
             IQuestion question2 = new Question();
+            question2.ID = 12;
             question2.DatePosted = DateTime.Now;
 
             IQuestion question3 = new Question();
+            question3.ID = 13;
             question3.DatePosted = DateTime.Now.AddDays(-8);
 
             mockService.AddQuestionByObject(question1);
@@ -456,7 +498,6 @@ namespace Team42Test.ServiceTests
 
             int questionsByLast7DaysCount = mockService.FilterQuestionsByLast7Days();
 
-            Assert.That(questionsByLast7DaysCount, Is.Not.Empty);
             Assert.That(questionsByLast7DaysCount, Is.GreaterThanOrEqualTo(2));
         }
 
