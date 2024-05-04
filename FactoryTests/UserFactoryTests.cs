@@ -23,7 +23,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void Begin_InitializeNewInstance()
+        public void Begin_FactoryIsStarted_InitializesNewIUserInstance()
         {
             mockBuilder.Begin();
 
@@ -33,7 +33,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetName_SetNameToHello()
+        public void SetName_NameProvidedIsHello_SetNameToHello()
         {
             const string expectedName = "Hello";
 
@@ -44,7 +44,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetNotificationList_SetNotificationListToEmptyList()
+        public void SetNotificationList_NotificationListProvidedIsEmpty_SetNotificationListToEmptyList()
         {
             List<INotification> expectedNotificationlist = [];
 
@@ -56,7 +56,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetCategoriesModeratedList_SetCategoriesModeratedListToEmptyList()
+        public void SetCategoriesModeratedList_CategoriesModeratedListIsEmpty_SetCategoriesModeratedListToEmptyList()
         {
             List<ICategory> expectedCategories = [];
 
@@ -68,7 +68,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetBadgeList_SetBadgeListToEmptyList()
+        public void SetBadgeList_BadgeListProvidedIsEmpty_SetBadgeListToEmptyList()
         {
             List<IBadge> expectedBadgelist = [];
 
