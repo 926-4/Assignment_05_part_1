@@ -20,7 +20,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void Begin_InitializeNewInstance()
+        public void Begin_FactoryIsStarted_InitializesNewIReactionInstance()
         {
             mockBuilder.Begin();
 
@@ -30,7 +30,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetReactionValue_SetReactionValueTo1()
+        public void SetReactionValue_ReactionValueProvidedIs1_SetReactionValueTo1()
         {
             const int expectedReactionValue = 1;
 
@@ -41,7 +41,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetReacterUserId_SetReacterUserIdTo1()
+        public void SetReacterUserId_ReacterUserIdProvidedIs1_SetReacterUserIdTo1()
         {
             const int expectedUserId = 1;
 

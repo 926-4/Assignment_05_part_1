@@ -22,10 +22,11 @@ namespace Team42Test.RepositoryTests
         [SetUp]
         public void Setup()
         {
-            mockTsqlRepository = new TSQLRepository();
+            mockTsqlRepository = new TSQLRepository("Data Source=DESKTOP-2E72F19;" + "Initial Catalog=Team42DB;" +
+                "Integrated Security=True;");
         }
         [Test]
-        public void GetNotificationsOfUser_ReturnsNotifications()
+        public void GetNotificationsOfUser_ValidUserIdProvided_ReturnsIEnumerableOfINotification()
         {
             const long expectedUserId = 1;
 
@@ -35,7 +36,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(notifications, Is.InstanceOf<IEnumerable<INotification>>());
         }
         [Test]
-        public void GetCategoriesModeratedByUser_ReturnsCategories()
+        public void GetCategoriesModeratedByUser_ValidUserIdProvided_ReturnsIEnumerableOfICategory()
         {
             const long expectedUserId = 1;
 
@@ -45,7 +46,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(categories, Is.InstanceOf<IEnumerable<ICategory>>());
         }
         [Test]
-        public void GetBadgesOfUser_ReturnsBadges()
+        public void GetBadgesOfUser_ValidUserIdProvided_ReturnsIEnumerableOfIBadge()
         {
             const long expectedUserId = 1;
 
@@ -55,7 +56,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(badges, Is.InstanceOf<IEnumerable<IBadge>>());
         }
         [Test]
-        public void GetAllUsers_ReturnsUsers()
+        public void GetAllUsers_OnDefaultTSQLRepository_ReturnsIEnumerableOfIUser()
         {
             var users = mockTsqlRepository.GetAllUsers();
 
@@ -63,16 +64,17 @@ namespace Team42Test.RepositoryTests
             Assert.That(users, Is.InstanceOf<IEnumerable<IUser>>());
         }
         [Test]
-        public void GetReactionsOfPostByPostId_ReturnsReactions()
+        public void GetReactionsOfPostByPostId_ValidPostIdProvided_ReturnsIEnumerableofIReaction()
         {
             const long expectedPostId = 1;
 
             var reactions = mockTsqlRepository.GetReactionsOfPostByPostID(expectedPostId);
 
             Assert.That(reactions, Is.Not.Null);
+            Assert.That(reactions, Is.InstanceOf<IEnumerable<IReaction>>());
         }
         [Test]
-        public void GetAllCategories_ReturnsCategories()
+        public void GetAllCategories_OnDefaultTSQLRepository_ReturnsIEnumerableOfICategory()
         {
             var categories = mockTsqlRepository.GetAllCategories();
 
@@ -80,7 +82,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(categories, Is.InstanceOf<IEnumerable<ICategory>>());
         }
         [Test]
-        public void GetTagsOfQuestion_ReturnsTags()
+        public void GetTagsOfQuestion_ValidQuestionIdProvided_ReturnsIEnumerableOfITag()
         {
             const long expectedQuestionId = 1;
 
@@ -90,7 +92,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(tags, Is.InstanceOf<IEnumerable<ITag>>());
         }
         [Test]
-        public void GetAllQuestions_ReturnsQuestions()
+        public void GetAllQuestions_OnDefaultTSQLRepository_ReturnsIEnumerableOfIQuestion()
         {
             var questions = mockTsqlRepository.GetAllQuestions();
 
@@ -98,7 +100,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(questions, Is.InstanceOf<IEnumerable<IQuestion>>());
         }
         [Test]
-        public void GetAnswersOfUser_ReturnsAnswers()
+        public void GetAnswersOfUser_ValidUserIdProvided_ReturnsIEnumerableOfIAnswer()
         {
             const long expectedUserId = 1;
 
@@ -108,7 +110,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(answers, Is.InstanceOf<IEnumerable<IAnswer>>());
         }
         [Test]
-        public void GetCommentsOfUser_ReturnsComments()
+        public void GetCommentsOfUser_ValidUserIdProvided_ReturnsIEnumerableOfIComment()
         {
             const long expectedUserId = 1;
 
@@ -118,7 +120,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(comments, Is.InstanceOf<IEnumerable<IComment>>());
         }
         [Test]
-        public void GetQuestionsOfUser_ReturnsQuestions()
+        public void GetQuestionsOfUser_ValidUserIdProvided_ReturnsIEnumerableOfIQuestion()
         {
             const long expectedUserId = 1;
 
@@ -128,7 +130,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(questions, Is.InstanceOf<IEnumerable<IQuestion>>());
         }
         [Test]
-        public void GetQuestion_ReturnsQuestion()
+        public void GetQuestion_ValidQuestionIdProvided_ReturnsIQuestion()
         {
             const long expectedQuestionId = 1;
 
@@ -138,7 +140,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(question, Is.InstanceOf<IQuestion>());
         }
         [Test]
-        public void GetUser_ReturnsUser()
+        public void GetUser_ValidUserIdProvided_ReturnsIUser()
         {
             const long expectedUserId = 1;
 
@@ -148,7 +150,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(user, Is.InstanceOf<IUser>());
         }
         [Test]
-        public void GetCategoryById_ReturnsCategory()
+        public void GetCategoryById_ValidCategoryIdProvided_ReturnsICategory()
         {
             const long expectedCategoryId = 1;
 
@@ -158,7 +160,7 @@ namespace Team42Test.RepositoryTests
             Assert.That(category, Is.InstanceOf<ICategory>());
         }
         [Test]
-        public void GetRepliesOfPost_ReturnsReplies()
+        public void GetRepliesOfPost_ValidPostIdProvided_ReturnsIEnumerableOfIPost()
         {
             const long expectedPostId = 1;
 
@@ -168,11 +170,11 @@ namespace Team42Test.RepositoryTests
             Assert.That(replies, Is.InstanceOf<IEnumerable<IPost>>());
         }
         [Test]
-        public void AddQuestion_SavesQuestionToDatabase()
+        public void AddQuestion_ValidQuestionProvided_SavesQuestionToDatabase()
         {
             var expectedQuestion = new Question
             {
-                UserID = 1,
+                UserID = 33,
                 Title = "Test Question",
                 Content = "Test Content",
                 Category = new Category { ID = 1 }
@@ -180,6 +182,7 @@ namespace Team42Test.RepositoryTests
 
             mockTsqlRepository.AddQuestion(expectedQuestion);
 
+            Assert.That(mockTsqlRepository.GetQuestion(expectedQuestion.ID), Is.EqualTo(expectedQuestion));
         }
     }
 }

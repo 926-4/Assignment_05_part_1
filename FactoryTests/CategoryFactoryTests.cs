@@ -15,7 +15,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void Begin_InitializeNewInstance()
+        public void Begin_FactoryIsStarted_InitializesNewICategoryInstance()
         {
             mockBuilder.Begin();
 
@@ -25,7 +25,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetId_SetIdTo1()
+        public void SetId_IdProvidedIs1_SetIdTo1()
         {
             const long expectedId = 1;
 
@@ -36,7 +36,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetName_SetNameToHello()
+        public void SetName_NameProvidedIsHello_SetNameToHello()
         {
             const string expectedName = "Hello";
 

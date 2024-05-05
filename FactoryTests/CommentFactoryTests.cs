@@ -20,7 +20,7 @@ namespace Team42Test.BuilderTests
             mockBuilder = new CommentBuilder();
         }
         [Test]
-        public void Begin_InitializeNewInstance()
+        public void Begin_FactoryIsStarted_InitializesNewICommentInstance()
         {
             mockBuilder.Begin();
 
@@ -30,7 +30,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetId_SetIdTo1()
+        public void SetId_IdProvidedIs1_SetIdTo1()
         {
             const long expectedId = 1;
 
@@ -41,7 +41,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetUserId_SetUserIdTo1()
+        public void SetUserId_UserIdProvidedIs1_SetUserIdTo1()
         {
             const long expectedUserId = 1;
 
@@ -52,7 +52,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetContent_SetContentToHello()
+        public void SetContent_ContentNameProvidedIsHello_SetContentToHello()
         {
             const string expectedContent = "Hello";
 
@@ -63,7 +63,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetDatePosted_SetDatePostedTo_2023_02_02()
+        public void SetDatePosted_DateProvidedIs20230202_SetDatePostedTo_2023_02_02()
         {
             DateTime expectedDatePosted = DateTime.Parse("2023-02-02");
 
@@ -74,7 +74,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetDateOfLastEdit_SetDateOfLastEditTo_2023_02_02()
+        public void SetDateOfLastEdit_DateProvidedIs20230202_SetDateOfLastEditTo_2023_02_02()
         {
             DateTime expectedDateOfLastEdit = DateTime.Parse("2023-02-02");
 
@@ -85,7 +85,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetReactions_SetReactionsToEmptyReactionsList()
+        public void SetReactions_ReactionListProvidedIsEmpty_SetReactionsToEmptyReactionsList()
         {
             var expectedReactionList = new List<IReaction>();
 

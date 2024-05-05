@@ -20,7 +20,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void Begin_InitializeNewInstance()
+        public void Begin_FactoryIsStarted_InitializesNewICommentInstance()
         {
             mockBuilder.Begin();
 
@@ -30,7 +30,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetId_SetIdTo1()
+        public void SetId_IdProvidedIs1_SetIdTo1()
         {
             const long expectedId = 1;
 
@@ -41,7 +41,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetText_SetTextToHello()
+        public void SetText_TextProvidedIsHello_SetTextToHello()
         {
             const string expectedText = "hello";
 
@@ -52,7 +52,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetPostId_SetPostIdTo1()
+        public void SetPostId_PostIdProvidedIs1_SetPostIdTo1()
         {
             const long expectedPostId = 1;
 
@@ -63,7 +63,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetBadgeId_SetBadgeIdTo1()
+        public void SetBadgeId_BadgeIdProvidedIs1_SetBadgeIdTo1()
         {
             const long expectedBadgeId = 1;
 

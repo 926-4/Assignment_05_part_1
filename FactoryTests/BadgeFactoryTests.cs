@@ -15,7 +15,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void Begin_InitializeNewInstance()
+        public void Begin_FactoryIsStarted_InitializesNewIBadgeInstance()
         {
             mockBuilder.Begin();
 
@@ -25,7 +25,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetName_SetNameToHello()
+        public void SetName_NameProvidedIsHello_SetNameToHello()
         {
             const string expectedName = "Hello";
 
@@ -36,7 +36,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetDescription_SetDescriptionToHello()
+        public void SetDescription_DescriptionProvidedIsHello_SetDescriptionToHello()
         {
             const string expectedDescription = "Hello";
 
@@ -47,7 +47,7 @@ namespace Team42Test.BuilderTests
         }
 
         [Test]
-        public void SetImage_SetImageToNull()
+        public void SetImage_ImageProvidedIsNull_SetImageToNull()
         {
             mockBuilder.Begin().SetImage(null);
             var answer = mockBuilder.End();
