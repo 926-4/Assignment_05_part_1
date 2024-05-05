@@ -32,6 +32,32 @@ namespace Team42Test.ServiceTests
         }
 
         [Test]
+        public void AddQuestionByObject_OnDefaultService_AddsQuestionByObject()
+        {
+            long oldQuestionsCount;
+            long newQuestionsCount;
+
+            Question question1 = new ();
+            question1.ID = 11;
+
+            Question question2 = new ();
+            question2.ID = 22;
+
+            Question question3 = new ();
+            question3.ID = 33;
+
+            oldQuestionsCount = mockService.GetAllQuestions().Count;
+
+            mockService.AddQuestionByObject(question1);
+            mockService.AddQuestionByObject(question2);
+            mockService.AddQuestionByObject(question3);
+
+            newQuestionsCount = mockService.GetAllQuestions().Count;
+
+            Assert.That(oldQuestionsCount + 3, Is.EqualTo(newQuestionsCount));
+        }
+
+        [Test]
         public void GetUser_UserIdProvided_ReturnsUserById()
         {
             User user = new User();
