@@ -12,6 +12,8 @@ using System.Reflection;
 using UBB_SE_2024_Team_42.Repository;
 using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Posts;
+using System.Data.SqlClient;
+using NuGet.Frameworks;
 
 namespace Team42Test.RepositoryTests
 {
@@ -19,21 +21,130 @@ namespace Team42Test.RepositoryTests
     public class TSQLRepositoryTests
     {
         public TSQLRepository mockTsqlRepository;
+        private const string ConnectionString = "Data Source=DESKTOP-2E72F19;" + "Initial Catalog=Team42DB;" +
+                                        "Integrated Security=True;";
         [SetUp]
         public void Setup()
         {
-            mockTsqlRepository = new TSQLRepository("Data Source=DESKTOP-2E72F19;" + "Initial Catalog=Team42DB;" +
-                "Integrated Security=True;");
+            RemoveTestData();
+            mockTsqlRepository = new TSQLRepository(ConnectionString);
+            AddTestData();
+        }
+        private void AddTestData()
+        {
+            using(var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand("Insert into Users(id, name) values (200, 'Test User')", connection);
+                command.ExecuteNonQuery();
+                command = new SqlCommand("Insert into Notification(id, userId, postId, badgeId) values (200, 200, 200, 200)");
+                command.ExecuteNonQuery();
+                command = new SqlCommand("Insert into Categories(id, name) values (200, 'Test Category')");
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+        private void RemoveTestData()
+        {
+            using(var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand("Delete from Users where id = 200", connection);
+                command.ExecuteNonQuery();
+                command = new SqlCommand("Delete from Notification where id = 200", connection);
+                command.ExecuteNonQuery();
+                command = new SqlCommand("Delete from Categories where id = 200", connection);
+                command.ExecuteNonQuery();
+                command = new SqlCommand("Delete from Questions where id = 33", connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+        [Test]
+        public void AddQuestion_ValidQuestionProvided_SavesQuestionToDatabase()
+        {
+            var expectedQuestion = new Question
+            {
+                UserID = 33,
+                Title = "Test Question",
+                Content = "Test Content",
+                Category = new Category { ID = 1 }
+            };
+
+            mockTsqlRepository.AddQuestion(expectedQuestion);
+
+            Assert.That(mockTsqlRepository.GetQuestion(expectedQuestion.ID), Is.EqualTo(expectedQuestion));
+        }
+        [Test]
+        public void GetQuestionsOfUser_ValidUserIdProvided_ReturnsIEnumerableOfIQuestion()
+        {
+            const long expectedUserId = 33;
+            var expectedQuestion = new Question
+            {
+                UserID = 33,
+                Title = "Test Question",
+                Content = "Test Content",
+                Category = new Category { ID = 1 }
+            };
+
+            var questions = mockTsqlRepository.GetQuestionsOfUser(expectedUserId);
+
+            Assert.That(questions, Is.Not.Null);
+            Assert.That(questions, Is.InstanceOf<IEnumerable<IQuestion>>());
+            Assert.That(questions, Contains.Item(expectedQuestion));
+        }
+        [Test]
+        public void GetAllQuestions_OnDefaultTSQLRepository_ReturnsIEnumerableOfIQuestion()
+        {
+            var questions = mockTsqlRepository.GetAllQuestions();
+            var expectedQuestion = new Question
+            {
+                UserID = 33,
+                Title = "Test Question",
+                Content = "Test Content",
+                Category = new Category { ID = 1 }
+            };
+
+            Assert.That(questions, Is.Not.Null);
+            Assert.That(questions, Is.InstanceOf<IEnumerable<IQuestion>>());
+            Assert.That(questions, Contains.Item(expectedQuestion));
+        }
+        [Test]
+        public void GetQuestion_ValidQuestionIdProvided_ReturnsIQuestion()
+        {
+            const long expectedQuestionId = 33;
+
+            var expectedQuestion = new Question
+            {
+                UserID = 33,
+                Title = "Test Question",
+                Content = "Test Content",
+                Category = new Category { ID = 1 }
+            };
+
+            var question = mockTsqlRepository.GetQuestion(expectedQuestionId);
+
+            Assert.That(question, Is.Not.Null);
+            Assert.That(question, Is.InstanceOf<IQuestion>());
+            Assert.That(question, Is.EqualTo(expectedQuestion));
         }
         [Test]
         public void GetNotificationsOfUser_ValidUserIdProvided_ReturnsIEnumerableOfINotification()
         {
-            const long expectedUserId = 1;
+            const long expectedUserId = 200;
+            var notification = new Notification
+            {
+                ID = 200,
+                UserID = 200,
+                PostID = 200,
+                BadgeID = 200
+            };
 
             var notifications = mockTsqlRepository.GetNotificationsOfUser(expectedUserId);
 
             Assert.That(notifications, Is.Not.Null);
             Assert.That(notifications, Is.InstanceOf<IEnumerable<INotification>>());
+            Assert.That(notifications, Contains.Item(notification));
         }
         [Test]
         public void GetCategoriesModeratedByUser_ValidUserIdProvided_ReturnsIEnumerableOfICategory()
@@ -92,14 +203,6 @@ namespace Team42Test.RepositoryTests
             Assert.That(tags, Is.InstanceOf<IEnumerable<ITag>>());
         }
         [Test]
-        public void GetAllQuestions_OnDefaultTSQLRepository_ReturnsIEnumerableOfIQuestion()
-        {
-            var questions = mockTsqlRepository.GetAllQuestions();
-
-            Assert.That(questions, Is.Not.Null);
-            Assert.That(questions, Is.InstanceOf<IEnumerable<IQuestion>>());
-        }
-        [Test]
         public void GetAnswersOfUser_ValidUserIdProvided_ReturnsIEnumerableOfIAnswer()
         {
             const long expectedUserId = 1;
@@ -118,26 +221,6 @@ namespace Team42Test.RepositoryTests
 
             Assert.That(comments, Is.Not.Null);
             Assert.That(comments, Is.InstanceOf<IEnumerable<IComment>>());
-        }
-        [Test]
-        public void GetQuestionsOfUser_ValidUserIdProvided_ReturnsIEnumerableOfIQuestion()
-        {
-            const long expectedUserId = 1;
-
-            var questions = mockTsqlRepository.GetQuestionsOfUser(expectedUserId);
-
-            Assert.That(questions, Is.Not.Null);
-            Assert.That(questions, Is.InstanceOf<IEnumerable<IQuestion>>());
-        }
-        [Test]
-        public void GetQuestion_ValidQuestionIdProvided_ReturnsIQuestion()
-        {
-            const long expectedQuestionId = 1;
-
-            var question = mockTsqlRepository.GetQuestion(expectedQuestionId);
-
-            Assert.That(question, Is.Not.Null);
-            Assert.That(question, Is.InstanceOf<IQuestion>());
         }
         [Test]
         public void GetUser_ValidUserIdProvided_ReturnsIUser()
@@ -168,21 +251,6 @@ namespace Team42Test.RepositoryTests
 
             Assert.That(replies, Is.Not.Null);
             Assert.That(replies, Is.InstanceOf<IEnumerable<IPost>>());
-        }
-        [Test]
-        public void AddQuestion_ValidQuestionProvided_SavesQuestionToDatabase()
-        {
-            var expectedQuestion = new Question
-            {
-                UserID = 33,
-                Title = "Test Question",
-                Content = "Test Content",
-                Category = new Category { ID = 1 }
-            };
-
-            mockTsqlRepository.AddQuestion(expectedQuestion);
-
-            Assert.That(mockTsqlRepository.GetQuestion(expectedQuestion.ID), Is.EqualTo(expectedQuestion));
         }
     }
 }
