@@ -136,7 +136,7 @@ namespace Team42Test.ServiceTests
         {
             string questionTitle1 = "Numar elemente lista C#";
             string questionContent1 = "Cum aflii numarul de elemente dintr-o lista in C#?";
-            Category questionCategory1 = new UBB_SE_2024_Team_42.Domain.Category.Category();            
+            Category questionCategory1 = new UBB_SE_2024_Team_42.Domain.Category.Category();
             questionCategory1.Name = "jmechereala la info";
 
             string questionTitle2 = "Mancare seara asta";
@@ -171,28 +171,73 @@ namespace Team42Test.ServiceTests
         [Test]
         public void GetQuestionsWithAtLeastOneAnswer_()
         {
+            string questionTitle1 = "Numar elemente lista C#";
+            string questionContent1 = "Cum aflii numarul de elemente dintr-o lista in C#?";
+            Category questionCategory1 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory1.Name = "jmechereala la info";
 
+            string questionTitle2 = "Mancare seara asta";
+            string questionContent2 = "Ce comandam in seara asta de mancare?";
+            Category questionCategory2 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory2.Name = "decizii";
+
+            string questionTitle3 = "Locatie seara asta";
+            string questionContent3 = "Unde mergem in seara asta?";
+            Category questionCategory3 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory3.Name = "decizii";
+
+
+            mockService.AddQuestion(questionTitle1, questionContent1, questionCategory1);
+            mockService.AddQuestion(questionTitle2, questionContent2, questionCategory2);
+            mockService.AddQuestion(questionTitle3, questionContent3, questionCategory3);
+            List<IQuestion> x = mockService.GetQuestionsWithAtLeastOneAnswer();
+            Assert.That(x, Is.Not.Null);
+            Assert.That(x, Is.Not.Empty);
+            Assert.That(x.Count, Is.EqualTo(3));
         }
 
         [Test]
         public void FindQuestionsByPartialStringInAnyField_()
         {
+            string questionTitle1 = "Numar elemente lista C#";
+            string questionContent1 = "Cum aflii numarul de elemente dintr-o lista in C#?";
+            Category questionCategory1 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory1.Name = "jmechereala la info";
 
+            string questionTitle2 = "Mancare seara asta";
+            string questionContent2 = "Ce comandam in seara asta de mancare?";
+            Category questionCategory2 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory2.Name = "decizii";
+
+            string questionTitle3 = "Locatie seara asta";
+            string questionContent3 = "Unde mergem in seara asta?";
+            Category questionCategory3 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory3.Name = "decizii";
+
+
+            mockService.AddQuestion(questionTitle1, questionContent1, questionCategory1);
+            mockService.AddQuestion(questionTitle2, questionContent2, questionCategory2);
+            mockService.AddQuestion(questionTitle3, questionContent3, questionCategory3);
+            List<IQuestion> x = mockService.FindQuestionsByPartialStringInAnyField("anca");
+            Assert.That(x, Is.Not.Null);
+            Assert.That(x, Is.Not.Empty);
+            Assert.That(x.Count, Is.EqualTo(1));
         }
 
         [Test]
         public void GetQuestionsSortedByScoreAscending_()
         {
-            Reaction reaction1 = new ();
+            Reaction reaction1 = new();
             reaction1.Value = 10;
             Reaction reaction2 = new();
             reaction2.Value = 50;
             Reaction reaction3 = new();
             reaction3.Value = 100;
 
-            List<IReaction> question1Reactions = new List<IReaction> { reaction1, reaction2, reaction3};  // Score = 160
-            List<IReaction> question2Reactions = new List<IReaction> { reaction2, reaction2, reaction2};  // Score = 150
-            List<IReaction> question3Reactions = new List<IReaction> { reaction1, reaction1, reaction3};  // Score = 120
+
+            List<IReaction> question1Reactions = new List<IReaction> { reaction1, reaction1, reaction3 };  // Score = 160
+            List<IReaction> question2Reactions = new List<IReaction> { reaction2, reaction2, reaction2 };  // Score = 150
+            List<IReaction> question3Reactions = new List<IReaction> { reaction1, reaction2, reaction3 };  // Score = 120
 
             Question question1 = new Question();
             question1.Reactions = question1Reactions;
@@ -207,31 +252,93 @@ namespace Team42Test.ServiceTests
 
             List<IQuestion> receivedQuestions = mockService.GetAllQuestions();
             List<IQuestion> receivedSortedQuestions = mockService.GetQuestionsSortedByScoreAscending();
+            Assert.That(receivedQuestions, Is.EqualTo(receivedSortedQuestions));
 
         }
 
         [Test]
         public void GetQuestionsSortedByScoreDescending_()
         {
+            Reaction reaction1 = new();
+            reaction1.Value = 10;
+            Reaction reaction2 = new();
+            reaction2.Value = 50;
+            Reaction reaction3 = new();
+            reaction3.Value = 100;
 
-        }
+            List<IReaction> question1Reactions = new List<IReaction> { reaction1, reaction2, reaction3 };  // Score = 160
+            List<IReaction> question2Reactions = new List<IReaction> { reaction2, reaction2, reaction2 };  // Score = 150
+            List<IReaction> question3Reactions = new List<IReaction> { reaction1, reaction1, reaction3 };  // Score = 120
 
-        [Test]
-        public void GetReactionScore_()
-        {
-            
+            Question question1 = new Question();
+            question1.Reactions = question1Reactions;
+            Question question2 = new Question();
+            question2.Reactions = question2Reactions;
+            Question question3 = new Question();
+            question3.Reactions = question3Reactions;
+
+            mockService.AddQuestionByObject(question1);
+            mockService.AddQuestionByObject(question2);
+            mockService.AddQuestionByObject(question3);
+
+            List<IQuestion> receivedQuestions = mockService.GetAllQuestions();
+            List<IQuestion> receivedSortedQuestions = mockService.GetQuestionsSortedByScoreDescending();
+            Assert.That(receivedQuestions, Is.EqualTo(receivedSortedQuestions));
         }
 
         [Test]
         public void SortQuestionsByNumberOfAnswersAscending_()
         {
+            string questionTitle1 = "Numar elemente lista C#";
+            string questionContent1 = "Cum aflii numarul de elemente dintr-o lista in C#?";
+            Category questionCategory1 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory1.Name = "jmechereala la info";
+
+            string questionTitle2 = "Mancare seara asta";
+            string questionContent2 = "Ce comandam in seara asta de mancare?";
+            Category questionCategory2 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory2.Name = "decizii";
+
+            string questionTitle3 = "Locatie seara asta";
+            string questionContent3 = "Unde mergem in seara asta?";
+            Category questionCategory3 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory3.Name = "decizii";
+
+
+            mockService.AddQuestion(questionTitle1, questionContent1, questionCategory1);
+            mockService.AddQuestion(questionTitle2, questionContent2, questionCategory2);
+            mockService.AddQuestion(questionTitle3, questionContent3, questionCategory3);
+            List<IQuestion> x = mockService.GetAllQuestions();
+
+            Assert.That(x, Is.EqualTo(mockService.SortQuestionsByNumberOfAnswersAscending()));
 
         }
 
         [Test]
         public void SortQuestionsByNumberOfAnswersDescending_()
         {
+            string questionTitle1 = "Numar elemente lista C#";
+            string questionContent1 = "Cum aflii numarul de elemente dintr-o lista in C#?";
+            Category questionCategory1 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory1.Name = "jmechereala la info";
 
+            string questionTitle2 = "Mancare seara asta";
+            string questionContent2 = "Ce comandam in seara asta de mancare?";
+            Category questionCategory2 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory2.Name = "decizii";
+
+            string questionTitle3 = "Locatie seara asta";
+            string questionContent3 = "Unde mergem in seara asta?";
+            Category questionCategory3 = new UBB_SE_2024_Team_42.Domain.Category.Category();
+            questionCategory3.Name = "decizii";
+
+
+            mockService.AddQuestion(questionTitle1, questionContent1, questionCategory1);
+            mockService.AddQuestion(questionTitle2, questionContent2, questionCategory2);
+            mockService.AddQuestion(questionTitle3, questionContent3, questionCategory3);
+            List<IQuestion> x = mockService.GetAllQuestions();
+
+            Assert.That(x, Is.EqualTo(mockService.SortQuestionsByNumberOfAnswersDescending()));
         }
 
         [Test]
@@ -247,7 +354,7 @@ namespace Team42Test.ServiceTests
             mockService.AddQuestionByObject(question1);
             mockService.AddQuestionByObject(question2);
             mockService.AddQuestionByObject(question3);
-            
+
             List<IQuestion> sortedQuestions = mockService.SortQuestionsByDateAscending();
 
             Assert.That(sortedQuestions, Is.Not.Null);
@@ -456,20 +563,49 @@ namespace Team42Test.ServiceTests
 
             int questionsByLast7DaysCount = mockService.FilterQuestionsByLast7Days();
 
-            Assert.That(questionsByLast7DaysCount, Is.Not.Empty);
             Assert.That(questionsByLast7DaysCount, Is.GreaterThanOrEqualTo(2));
         }
 
         [Test]
         public void FilterQuestionsAnsweredThisMonth_()
         {
+            IQuestion question1 = new Question();
+            question1.DatePosted = DateTime.Now;
 
+            IQuestion question2 = new Question();
+            question2.DatePosted = DateTime.Now;
+
+            IQuestion question3 = new Question();
+            question3.DatePosted = DateTime.Now.AddDays(-8);
+
+            mockService.AddQuestionByObject(question1);
+            mockService.AddQuestionByObject(question2);
+            mockService.AddQuestionByObject(question3);
+
+            int questionsByLast7DaysCount = mockService.FilterQuestionsAnsweredThisMonth();
+
+            Assert.That(questionsByLast7DaysCount, Is.GreaterThanOrEqualTo(3));
         }
 
         [Test]
         public void FilterQuestionsAnsweredLastYear_()
         {
+            IQuestion question1 = new Question();
+            question1.DatePosted = DateTime.Now;
 
+            IQuestion question2 = new Question();
+            question2.DatePosted = DateTime.Now;
+
+            IQuestion question3 = new Question();
+            question3.DatePosted = DateTime.Now.AddDays(-8);
+
+            mockService.AddQuestionByObject(question1);
+            mockService.AddQuestionByObject(question2);
+            mockService.AddQuestionByObject(question3);
+
+            int questionsByLast7DaysCount = mockService.FilterQuestionsAnsweredLastYear();
+
+            Assert.That(questionsByLast7DaysCount, Is.GreaterThanOrEqualTo(3));
         }
     }
 }
